@@ -1,0 +1,7 @@
+pyrogram
+tgcrypto
+requests
+fpdf
+tqdm
+vosk
+yt-dlp
