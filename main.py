@@ -51,11 +51,11 @@ async def start(bot, update):
     )
 
 
-@Bot.on_message(filters.private & (filters.video | filters.document))
+@Bot.on_message(filters.private & (filters.video | filters.document | filters.audio))
 async def transcribe_from_file(bot, m):
     if m.document and not m.document.mime_type.startswith("video/"):
         return
-    media = m.video or m.document
+    media = m.video or m.document or m.audio
     editable_msg = await m.reply("`Downloading..`", parse_mode='md')
     c_time = time.time()
     file_dl_path = await bot.download_media(message=m, progress=progress_for_pyrogram, progress_args=("Downloading file..", editable_msg, c_time))
