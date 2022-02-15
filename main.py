@@ -150,10 +150,6 @@ async def download_yt_audio(youtube_url, msg):
 
 
 async def gen_transcript_and_send(msg, editable_msg, input_file, is_yt=True):
-    # Check if file exists
-    if not os.path.isfile(input_file):
-        raise FileNotFoundError(os.path.basename(input_file) + " not found")
-
     model_path = f'model-{LANGUAGE_CODE}'
     # Check if model path exists
     if not os.path.exists(model_path):
