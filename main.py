@@ -1,5 +1,6 @@
 import wave, math, os, json, shutil, subprocess, asyncio, time
 from pyrogram import Client, filters
+from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from vosk import Model, KaldiRecognizer
 from display_progress import progress_for_pyrogram, download_progress_hook, read_stderr
@@ -30,7 +31,7 @@ START_TXT = """
 Hi {},
 I am Transcript Extractor Bot.
 
-Just send a video/audio or a YouTube URL.
+Just send a video/audio/voice or a YouTube URL.
 """
 
 START_BTN = InlineKeyboardMarkup(
@@ -51,11 +52,11 @@ async def start(bot, update):
     )
 
 
-@Bot.on_message(filters.private & (filters.video | filters.document | filters.audio))
+@Bot.on_message(filters.private & (filters.video | filters.document | filters.audio | filters.voice))
 async def transcribe_from_file(bot, m):
     if m.document and not m.document.mime_type.startswith("video/"):
         return
-    media = m.video or m.document or m.audio
+    media = m.video or m.document or m.audio or m.voice
     editable_msg = await m.reply("`Downloading..`", parse_mode='md')
     c_time = time.time()
     file_dl_path = await bot.download_media(message=m, progress=progress_for_pyrogram, progress_args=("Downloading file..", editable_msg, c_time))
@@ -225,7 +226,11 @@ async def gen_transcript_and_send(msg, editable_msg, input_file, is_yt=True):
         with open(output_transcript_file, "w+") as file:
             file.write(transcription_text)
 
-    await msg.reply_document(output_transcript_file)
+    try:
+        await msg.reply_document(output_transcript_file)
+    except FloodWait as e:
+        await asyncio.sleep(e.x)
+
     await editable_msg.delete()
     os.remove(input_file)
     os.remove(output_transcript_file)
