@@ -1,0 +1,37 @@
+{
+  "name": "Transcript-Extractor-Bot",
+  "env": {
+    "API_ID": {
+      "description": "Add your telegram API_ID",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "Add your telegram API_HASH",
+      "value": ""
+    },
+    "MODEL_DOWNLOAD_URL": {
+      "description": "language model download link (see available models here: https://alphacephei.com/vosk/models)",
+      "value": "https://alphacephei.com/vosk/models/vosk-model-en-us-0.22-lgraph.zip"
+    },
+    "LANGUAGE_CODE": {
+      "description": "vosk supported language(code), see supported languages here: https://github.com/alphacep/vosk-api",
+      "value": "en-us"
+    },
+    "SEND_AS": {
+      "description": "transcript sending format (PDF or TXT)",
+      "value": "TXT"
+    },
+    "BOT_TOKEN": {
+      "description": "Your bot token, as a string.",
+      "value": ""
+}
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
