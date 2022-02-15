@@ -88,12 +88,16 @@ def download_and_unpack_models(model_url):
 
     if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
         print("ERROR, something went wrong")
+    else:
+        print("Downloaded Successfully. Now unpacking the model..")
+        shutil.unpack_archive(file_name)
+        model_target_dir = f'model-{LANGUAGE_CODE}'
+        if os.path.exists(model_target_dir):
+            os.remove(model_target_dir)
+        os.rename(file_name.rsplit('.', 1)[0], model_target_dir)
+        print("unpacking Done.")
 
-    print("Downloaded Successfully. Now unpacking the model..")
-    shutil.unpack_archive(file_name)
-    os.rename(file_name.rsplit('.', 1)[0], f'model-{LANGUAGE_CODE}')
     os.remove(file_name)
-    print("unpacking Done.")
 
 if not os.path.exists(f'model-{LANGUAGE_CODE}'):
     download_and_unpack_models(MODEL_URL)
