@@ -148,7 +148,7 @@ async def download_yt_audio(youtube_url, msg):
         ])
     
     if process.returncode != 0:
-        await msg.edit('An Error occurred')
+        await msg.edit_text('An Error occurred')
         exit(0)
     os.remove('youtube_dl_input.wav')
 
@@ -191,7 +191,7 @@ async def gen_transcript_and_send(msg, editable_msg, input_file, is_yt=True):
             round(percentage, 2)
         )
         try:
-            await editable_msg.edit(progress, parse_mode='md')
+            await editable_msg.edit_text(progress, parse_mode='md')
         except:
             pass
         if len(data) == 0:
@@ -229,7 +229,7 @@ async def gen_transcript_and_send(msg, editable_msg, input_file, is_yt=True):
     try:
         await msg.reply_document(output_transcript_file)
     except FloodWait as e:
-        await asyncio.sleep(e.x)
+        await asyncio.sleep(e.value)
 
     await editable_msg.delete()
     os.remove(input_file)
