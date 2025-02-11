@@ -191,7 +191,7 @@ async def gen_transcript_and_send(msg, editable_msg, input_file, is_yt=True):
             round(percentage, 2)
         )
         try:
-            await editable_msg.edit_text(progress, parse_mode='md')
+            await editable_msg.edit_text(progress)
         except:
             pass
         if len(data) == 0:
